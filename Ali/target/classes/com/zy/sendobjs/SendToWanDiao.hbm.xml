@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 2018-9-14 14:01:09 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="com.zy.sendobjs.SendToWanDiao" table="SENDTOWANDIAO">
+        <id name="id" type="java.lang.Long">
+            <column name="ID" />
+            <generator class="assigned" />
+        </id>
+        <list name="sensorBeans" inverse="false" table="SENSORBEAN" lazy="true">
+            <key></key>
+            <list-index></list-index>
+            <one-to-many class="com.zy.beans.SensorBean" />
+        </list>
+    </class>
+</hibernate-mapping>
