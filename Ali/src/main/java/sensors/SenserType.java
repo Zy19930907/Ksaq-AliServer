@@ -2,7 +2,7 @@ package sensors;
 
 public class SenserType {
 	public static final String SENSERTYPE_CH4LOW = "甲烷低浓度";
-	public static final String SENSERTYPE_CH4HIGHLOW = "甲烷高低浓度";
+	public static final String SENSERTYPE_CH4HIGHLOW = "甲烷高低浓";
 	public static final String SENSERTYPE_CH4HW = "红外甲烷";
 	public static final String SENSERTYPE_LASERCH4 = "激光甲烷";
 	public static final String SENSERTYPE_CO= "一氧化碳";

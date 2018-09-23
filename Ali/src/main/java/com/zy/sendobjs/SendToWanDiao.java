@@ -7,6 +7,15 @@ import com.zy.beans.SensorBean;
 
 public class SendToWanDiao {
 	
+	private String GatewayIp;
+	public String getGatewayIp() {
+		return GatewayIp;
+	}
+
+	public void setGatewayIp(String gatewayIp) {
+		GatewayIp = gatewayIp;
+	}
+
 	private List<SensorBean> sensorBeans = new ArrayList<SensorBean>();
 	
 	public List<SensorBean> getSensorBeans() {

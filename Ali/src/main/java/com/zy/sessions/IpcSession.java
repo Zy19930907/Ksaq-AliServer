@@ -5,10 +5,10 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
 
-import org.omg.CORBA.PRIVATE_MEMBER;
 import com.zy.beans.SensorBean;
 import com.zy.sendobjs.SendToWanDiao;
 import com.zy.tools.DataSwitch;
+import com.zy.tools.DateTool;
 import com.zy.tools.JsonMaker;
 
 import Ali.Ali.App;
@@ -49,30 +49,15 @@ public class IpcSession {
 		SensorBean sensorBean = null;
 		JsonMaker jsonMaker = new JsonMaker();
 		Sensor senser;
-		Object[][] sensermsg;
-		String[][] msgStrings;
-		String[] senserStrings;
 		SendToWanDiao sendToWanDiao = new SendToWanDiao();
 		int SenserCnt;
 		int i = 0, j = 0;
-		msgStrings = null;
-		sensermsg = null;
 		SenserCnt = (((DataSwitch.abs(senserAck[11]) * 256) + DataSwitch.abs(senserAck[10])) - 11) / 5;
-		msgStrings = new String[SenserCnt][5];
-		sensermsg = new Object[SenserCnt][5];
-		senserStrings = new String[SenserCnt];
 
 		for (i = 0; i < SenserCnt; i++) {
 			for (j = 0; j < 5; j++)
 				senserbuf[j] = senserAck[20 + 5 * i + j];
-			senserStrings[i] = DataSwitch.bytesToHexString(senserbuf);
 			senser = sensorFactory.creatSenser(senserbuf, gatewayIp);
-			msgStrings[i][0] = senser.SenserName;
-			msgStrings[i][1] = senser.linkState;
-			msgStrings[i][2] = senser.senserAddr;
-			msgStrings[i][3] = senser.canCode;
-			msgStrings[i][4] = senser.listenValue;
-			sensermsg[i] = msgStrings[i];
 			sensorBean = null;
 			sensorBean = new SensorBean();
 			sensorBean.setSensorName(senser.SenserName);
@@ -80,8 +65,11 @@ public class IpcSession {
 			sensorBean.setLinkState(senser.linkState);
 			sensorBean.setCanCode("C"+senser.canCode);
 			sensorBean.setValue(senser.listenValue);
+//			App.logRecoder.saveLog(System.getProperty("user.dir")+"/history/"+senser.SenserName+"/"
+//					+senser.senserAddr+"/value"+App.dateTool.getTimeH()+".txt",App.dateTool.getTimeHMS()+":"+senser.listenValue + "\r\n");
 			sendToWanDiao.addSensor(sensorBean);
 		}
+		
 		String toWandiao = jsonMaker.BeanToJsonString(sendToWanDiao);
 		App.logRecoder.saveLogwd(System.getProperty("user.dir")+"/test.txt",toWandiao);
 		return SenserCnt;
@@ -92,6 +80,7 @@ public class IpcSession {
 		private byte[] recv = new byte[10240];
 		private byte[] msg;
 		private byte[] data;
+		private byte[] ack = {0,1,2,3};
 
 		@Override
 		public void run() {
@@ -101,36 +90,18 @@ public class IpcSession {
 					if ((recvLen = inputStream.read(recv, 0, 10240)) != -1) {
 						msg = null;
 						msg = new byte[recvLen];
-						data = null;
-						data = new byte[msg.length - 5];
-						System.arraycopy(recv, 0, msg, 0, recvLen);
-						System.arraycopy(msg, 5, data, 0, data.length);
-						
-						if ((DataSwitch.abs(msg[0]) == 0xFE) && (DataSwitch.abs(msg[1]) == 0xFE)
-								&& (DataSwitch.abs(msg[2]) == 0xFE) && (DataSwitch.abs(msg[3]) == 0xFE)) {
-							switch (msg[4]) {
-							case 0x00:
-								App.logRecoder.saveLog(
-										System.getProperty("user.dir") + "/DataLogs/"
-												+ socket.getInetAddress().toString() + "/" + App.dateTool.getTimeH()
-												+ "/GatawayData.txt",
-												App.dateTool.getTimeHMSS() + DataSwitch.bytesToHexString(data) + "\r\n");
-								freshMode(data, "0.0.0.0:5000");
-								break;
-							case 0x01:
-								App.logRecoder.saveLog(
-										System.getProperty("user.dir") + "/DataLogs/"
-												+ socket.getInetAddress().toString() + "/" + App.dateTool.getTimeH()
-												+ "/SwitcherSensorInfo.txt",
-												App.dateTool.getTimeHMSS() + DataSwitch.bytesToHexString(data) + "\r\n");
-								break;
-
-							case 0x02:
-								App.logRecoder.saveLog(
-										System.getProperty("user.dir") + "/DataLogs/"
-												+ socket.getInetAddress().toString() + "/" + App.dateTool.getTimeH()
-												+ "/SwitcherCtrInfo.txt",
-												App.dateTool.getTimeHMSS() + DataSwitch.bytesToHexString(data) + "\r\n");
+						System.arraycopy(recv,0,msg,0,recvLen);
+						if ((DataSwitch.abs(msg[0]) == 0xEF) && (DataSwitch.abs(msg[1]) == 0xEF)
+								&& (DataSwitch.abs(msg[2]) == 0xEF) && (DataSwitch.abs(msg[3]) == 0xEF)) {
+							switch (msg[9]) {
+							case 0x60:
+//								App.logRecoder.saveLog(
+//										System.getProperty("user.dir") + "/DataLogs/"
+//												+ socket.getInetAddress().toString() + "/" + App.dateTool.getTimeH()
+//												+ "/GatawayData.txt",
+//												App.dateTool.getTimeHMSS() + DataSwitch.bytesToHexString(msg) + "\r\n");
+								freshMode(msg, "0.0.0.0:5000");
+								SendData(ack);
 								break;
 							}
 						}

@@ -1,0 +1,67 @@
+{
+  "sensorBeans": [
+    {
+      "SensorName": "烟雾",
+      "SensorAddr": "1",
+      "LinkState": "连接正常",
+      "CanCode": "C3",
+      "Value": "无烟"
+    },
+    {
+      "SensorName": "开停",
+      "SensorAddr": "2",
+      "LinkState": "连接正常",
+      "CanCode": "C3",
+      "Value": "停 "
+    },
+    {
+      "SensorName": "温湿度",
+      "SensorAddr": "3",
+      "LinkState": "连接正常",
+      "CanCode": "C3",
+      "Value": "26.1°C"
+    },
+    {
+      "SensorName": "负压",
+      "SensorAddr": "4",
+      "LinkState": "连接正常",
+      "CanCode": "C3",
+      "Value": "0.04KPa"
+    },
+    {
+      "SensorName": "断电馈电器",
+      "SensorAddr": "5",
+      "LinkState": "连接正常",
+      "CanCode": "C3",
+      "Value": "复电 | 无电"
+    },
+    {
+      "SensorName": "激光甲烷",
+      "SensorAddr": "6",
+      "LinkState": "连接正常",
+      "CanCode": "C3",
+      "Value": "0.0%"
+    },
+    {
+      "SensorName": "二氧化碳",
+      "SensorAddr": "7",
+      "LinkState": "连接正常",
+      "CanCode": "C3",
+      "Value": "0.0%"
+    },
+    {
+      "SensorName": "风速",
+      "SensorAddr": "9",
+      "LinkState": "连接正常",
+      "CanCode": "C3",
+      "Value": "0.0m/s"
+    },
+    {
+      "SensorName": "等待连接",
+      "SensorAddr": "100",
+      "LinkState": "连接断开",
+      "CanCode": "C1",
+      "Value": ""
+    }
+  ]
+}
