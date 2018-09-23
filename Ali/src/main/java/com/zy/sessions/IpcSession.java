@@ -71,6 +71,7 @@ public class IpcSession {
 		}
 		
 		String toWandiao = jsonMaker.BeanToJsonString(sendToWanDiao);
+		App.redis.save(DateTool.getDateString(), toWandiao);
 		App.logRecoder.saveLogwd(System.getProperty("user.dir")+"/test.txt",toWandiao);
 		return SenserCnt;
 	}

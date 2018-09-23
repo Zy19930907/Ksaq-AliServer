@@ -9,8 +9,8 @@ public class DateTool {
 	static SimpleDateFormat format2 = new SimpleDateFormat("yyyy-MM-dd HH");
 	static SimpleDateFormat format3 = new SimpleDateFormat("HH-mm-ss");
 	static SimpleDateFormat format4 = new SimpleDateFormat("HH:mm:ss:SSS");
-	public static String getDateString(long millis) {
-		return ("["+format0.format(millis)+"]");
+	public static String getDateString() {
+		return (format0.format(System.currentTimeMillis()));
 	}
 	public static String getDelayString(long millis) {
 		return ("["+format.format(millis)+"Ms]");
@@ -25,6 +25,6 @@ public class DateTool {
 		return ("["+format3.format(System.currentTimeMillis())+"]");
 	}
 	public String getTimeHMSS() {
-		return ("["+format4.format(System.currentTimeMillis())+"]--");
+		return (format4.format(System.currentTimeMillis()));
 	}
 }
